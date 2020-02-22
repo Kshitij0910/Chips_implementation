@@ -8,64 +8,84 @@ import android.widget.CompoundButton;
 import android.widget.Toast;
 
 import com.google.android.material.chip.Chip;
+import com.google.android.material.chip.ChipGroup;
+
+import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
 
-    Chip chip1, chip2;
+    ArrayList<Boolean> booleanArrayList = new ArrayList<>();
+    ArrayList<String> filterArray = new ArrayList<>();
+    ChipGroup filter;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        filter = findViewById(R.id.chipGroup);
 
-        chip1 = (Chip)findViewById(R.id.chip_example1);
-        chip2 = (Chip)findViewById(R.id.chip_example2);
+        filterArray.add(0, "Filter 1");
+        filterArray.add(1, "Filter 2");
+        filterArray.add(2, "Filter 3");
+        filterArray.add(3, "Filter 4");
+        for (int i = 0; i < filterArray.size(); i++) {
+            //addChip(filterArray.get(i), filter);
 
-        //Event1
-        chip1.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                if(true)
-                {
-                    Toast.makeText(MainActivity.this, "CATEGORY 1 Selected" , Toast.LENGTH_SHORT).show();
-                }
-                else if(false)
-                {
-                    Toast.makeText(MainActivity.this, "CATEGORY 1 Deselected" , Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
-        chip1.setOnCloseIconClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Toast.makeText(MainActivity.this, "Close icon clicked", Toast.LENGTH_SHORT).show();
-            }
+            Chip chip = new Chip(this);
+            chip.setId(i);
+            chip.setTag(i);
 
-        });
+            booleanArrayList.add(true);
+            chip.setText(filterArray.get(i));
+            chip.setCheckable(true);
 
-        //Event2
-        chip2.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                if(true)
-                {
-                    Toast.makeText(MainActivity.this, "CATEGORY 2 Selected" , Toast.LENGTH_SHORT).show();
+            chip.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+
+                    int tag = (int) compoundButton.getTag();
+                    booleanArrayList.set(tag, b);
+                    compoundButton.setVisibility(View.GONE);
+                    filterArray.remove(tag);
+
+
                 }
 
-                else if(false)
-                {
-                    Toast.makeText(MainActivity.this, "CATEGORY 2 Deselected" , Toast.LENGTH_SHORT).show();
-                }
 
-            }
-        });
-        chip2.setOnCloseIconClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Toast.makeText(MainActivity.this, "Close icon clicked", Toast.LENGTH_SHORT).show();
-            }
+            });
+            filter.addView(chip);
 
-        });
+
+        }
     }
 }
 
+
+
+
+//Category2
+       /* Category2Chip.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+@Override
+public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+        if(!b) //Event on deselection of chip2.
+        {
+        Category2Chip.setVisibility(View.GONE);
+        Toast.makeText(NoticesAndEventsFragment.this, "CATEGORY 2 Deselected" , Toast.LENGTH_SHORT).show();
+        }
+
+        else if(b) //Event on Selection of chip2.
+        {
+
+        Toast.makeText(NoticesAndEventsFragment.this, "CATEGORY 2 Selected" , Toast.LENGTH_SHORT).show();
+        }
+
+private void addChip(String pItem, ChipGroup pChipGroup) {
+        Chip lChip = new Chip(this);
+        lChip.setText(pItem);
+        lChip.setTextColor(getResources().getColor(R.color.chip_txt_color));
+        lChip.setChipBackgroundColor(getResources().getColorStateList(R.color.chip_bg_color));
+
+        pChipGroup.addView(lChip, pChipGroup.getChildCount() );
+        }
+*/
